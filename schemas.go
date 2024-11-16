@@ -1,22 +1,47 @@
 package main
 
 import (
+	"bytes"
+	"embed"
+
 	jsonschema "github.com/santhosh-tekuri/jsonschema/v6"
 )
 
+//go:embed schemas
+var schemas embed.FS
+
 var (
-	schEvent     *jsonschema.Schema
-	schOrganizer *jsonschema.Schema
+	schEventV1A1     *jsonschema.Schema
+	schOrganizerV1A1 *jsonschema.Schema
 )
 
 func loadSchemas() error {
-	c := jsonschema.NewCompiler()
 	var err error
 
-	if schEvent, err = c.Compile("schemas/event.v1alpha1.json"); err != nil {
+	if schEventV1A1, err = loadSchema("event.v1alpha1.json"); err != nil {
 		return err
 	}
 
-	schOrganizer, err = c.Compile("schemas/organizer.v1alpha1.json")
+	schOrganizerV1A1, err = loadSchema("organizer.v1alpha1.json")
 	return err
+}
+
+func loadSchema(name string) (*jsonschema.Schema, error) {
+	compiler := jsonschema.NewCompiler()
+
+	rawSchema, err := schemas.ReadFile("schemas/" + name)
+	if err != nil {
+		return nil, err
+	}
+
+	schema, err := jsonschema.UnmarshalJSON(bytes.NewReader(rawSchema))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := compiler.AddResource(name, schema); err != nil {
+		return nil, err
+	}
+
+	return compiler.Compile(name)
 }

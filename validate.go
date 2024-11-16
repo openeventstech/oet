@@ -59,9 +59,9 @@ func validateFile(path string, info os.FileInfo, err error) error {
 	// Validate the file with the correct validator
 	switch item["kind"] {
 	case "event.openevents.tech/v1alpha1":
-		err = schEvent.Validate(item)
+		err = schEventV1A1.Validate(item)
 	case "organizer.openevents.tech/v1alpha1":
-		err = schOrganizer.Validate(item)
+		err = schOrganizerV1A1.Validate(item)
 	default:
 		err = fmt.Errorf("invalid kind")
 	}
