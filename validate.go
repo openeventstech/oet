@@ -93,6 +93,8 @@ func validateFile(path string, info os.FileInfo, err error) error {
 	switch item["kind"] {
 	case "event.openevents.tech/v1alpha1":
 		err = schEventV1A1.Validate(item)
+	case "location.openevents.tech/v1alpha1":
+		err = schLocationV1A1.Validate(item)
 	case "organizer.openevents.tech/v1alpha1":
 		err = schOrganizerV1A1.Validate(item)
 	default:

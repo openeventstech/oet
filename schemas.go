@@ -12,6 +12,7 @@ var schemas embed.FS
 
 var (
 	schEventV1A1     *jsonschema.Schema
+	schLocationV1A1  *jsonschema.Schema
 	schOrganizerV1A1 *jsonschema.Schema
 )
 
@@ -21,7 +22,9 @@ func loadSchemas() error {
 	if schEventV1A1, err = loadSchema("event.v1alpha1.json"); err != nil {
 		return err
 	}
-
+	if schLocationV1A1, err = loadSchema("location.v1alpha1.json"); err != nil {
+		return err
+	}
 	schOrganizerV1A1, err = loadSchema("organizer.v1alpha1.json")
 	return err
 }
