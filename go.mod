@@ -1,4 +1,4 @@
-module github.com/openeventstech/oetdctl
+module github.com/openeventstech/oet
 
 go 1.23.2
 
