@@ -77,6 +77,11 @@ func validateFile(path string, info os.FileInfo, err error) error {
 		return nil
 	}
 
+	// Only read .yaml files
+	if filepath.Ext(info.Name()) != ".yaml" {
+		return nil
+	}
+
 	// Read and unmarshal the file
 	fc, err := os.ReadFile(path)
 	if err != nil {
